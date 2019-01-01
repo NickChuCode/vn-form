@@ -2,6 +2,14 @@
     <label>
         <span>
             <input
+                v-if="group"
+                type="checkbox"
+                :disabled="disabled"
+                :value="label"
+                v-model="model"
+                @change="change">
+            <input
+                v-else
                 type="checkbox"
                 :disabled="disabled"
                 :checked="currentValue"
@@ -11,6 +19,7 @@
     </label>
 </template>
 <script>
+import { findComponentUpward } from '../../utils/assist.js'
 import Emitter from '../../mixins/emitter.js'
 export default {
   name: 'vnCheckbox',
@@ -19,6 +28,9 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: [String, Number, Boolean]
     },
     value: {
       type: [String, Number, Boolean],
@@ -35,7 +47,10 @@ export default {
   },
   data () {
     return {
-      currentValue: this.value
+      currentValue: this.value,
+      model: [],
+      group: false,
+      parent: null
     }
   },
   watch: {
@@ -45,6 +60,15 @@ export default {
       } else {
         throw 'Value should be trueValue of falseValue'
       }
+    }
+  },
+  mounted () {
+    this.parent = findComponentUpward(this, 'vnCheckboxGroup')
+    if (this.parent) this.group = true
+    if (this.group) {
+      this.parent.updateModel(true)
+    } else {
+      this.updateModel()
     }
   },
   methods: {
@@ -58,11 +82,16 @@ export default {
 
       const value = checked ? this.trueValue : this.falseValue
       this.$emit('input', value)
-      this.$emit('on-change', value)
-      this.dispatch('vnFormItem', 'on-form-change', value)
+
+      if (this.group) {
+        this.parent.change(this.model)
+      } else {
+        this.$emit('on-change', value)
+        this.dispatch('vnFormItem', 'on-form-change', value)
+      }
     },
     updateModel () {
-      this.currentValue = this.value = this.trueValue
+      this.currentValue = this.value === this.trueValue
     }
   }
 }
