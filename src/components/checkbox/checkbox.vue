@@ -58,6 +58,7 @@ export default {
       if (val === this.trueValue || val === this.falseValue) {
         this.updateModel()
       } else {
+        // eslint-disable-next-line
         throw 'Value should be trueValue of falseValue'
       }
     }

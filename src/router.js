@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Form from './views/form'
+import Checkbox from './views/checkbox'
 
 Vue.use(Router)
 
@@ -10,6 +11,11 @@ export default new Router({
       path: '/',
       name: 'form',
       component: Form
+    },
+    {
+      path: '/checkbox',
+      name: 'checkbox',
+      component: Checkbox
     }
     // {
     //   path: '/about',
