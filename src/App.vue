@@ -3,6 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/checkbox">Checkbox</router-link>
+      <router-link to="/alert">Alert</router-link>
     </div>
     <router-view/>
   </div>
