@@ -2,8 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/checkbox">Checkbox</router-link>
-      <router-link to="/alert">Alert</router-link>
+      <router-link to="/checkbox">Checkbox</router-link> |
+      <router-link to="/alert">Alert</router-link> |
+      <router-link to="/table_render">Table</router-link>
     </div>
     <router-view/>
   </div>
