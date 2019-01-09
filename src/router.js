@@ -4,6 +4,7 @@ import Form from './views/form'
 import Checkbox from './views/checkbox'
 import Alert from './views/alert'
 import TableRender from './views/table-render.vue'
+import TableSlot from './views/table-slot.vue'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/table_render',
       name: 'tableRender',
       component: TableRender
+    },
+    {
+      path: '/table_slot',
+      name: 'tableSlot',
+      component: TableSlot
     }
     // {
     //   path: '/about',

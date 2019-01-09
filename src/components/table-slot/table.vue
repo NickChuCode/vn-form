@@ -21,7 +21,7 @@
   </table>
 </template>
 <script>
-import Render from './render.js'
+import Render from '../table-render/render.js'
 
 export default {
   components: {
