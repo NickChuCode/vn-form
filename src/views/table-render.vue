@@ -14,24 +14,88 @@ export default {
       columns: [
         {
           title: '姓名',
-          key: 'name'
+          key: 'name',
+          render: (h, { row, index }) => {
+            let edit
+
+            // 当前行为聚焦行时
+            if (this.editIndex === index) {
+              edit = [h('input', {
+                domProps: {
+                  value: row.name
+                },
+                on: {
+                  input: (event) => {
+                    this.editName = event.target.value
+                  }
+                }
+              })]
+            } else {
+              edit = row.name
+            }
+
+            return h('div', [
+              edit
+            ])
+          }
         },
         {
           title: '年龄',
-          key: 'age'
+          key: 'age',
+          render: (h, { row, index }) => {
+            let edit
+
+            // 当前行为聚焦时
+            if (this.editIndex === index) {
+              edit = [h('input', {
+                domProps: {
+                  value: row.age
+                },
+                on: {
+                  input: (event) => {
+                    this.editAge = event.target.value
+                  }
+                }
+              })]
+            } else {
+              edit = row.age
+            }
+
+            return h('div', [
+              edit
+            ])
+          }
         },
         {
           title: '出生日期',
           key: 'birthday',
-          render: (h, { row, column, index }) => {
-            const date = new Date(parseInt(row.birthday))
-            const year = date.getFullYear()
-            const month = date.getMonth() + 1
-            const day = date.getDate()
+          render: (h, { row, index }) => {
+            let edit
 
-            const birthday = `${year}-${month}-${day}`
+            // 当前行为聚焦
+            if (this.editIndex === index) {
+              edit = [h('input', {
+                domProps: {
+                  value: row.birthday
+                },
+                on: {
+                  input: (event) => {
+                    this.editBirthday = event.target.value
+                  }
+                }
+              })]
+            } else {
+              const date = new Date(parseInt(row.birthday))
+              const year = date.getFullYear()
+              const month = date.getMonth() + 1
+              const day = date.getDate()
 
-            return h('span', birthday)
+              edit = `${year}-${month}-${day}`
+            }
+
+            return h('div', [
+              edit
+            ])
           }
         },
         {
@@ -39,7 +103,47 @@ export default {
           key: 'address'
         },
         {
-          title: '操作'
+          title: '操作',
+          render: (h, { row, index }) => {
+            // 如果当前行是编辑状态，则渲染两个按钮
+            if (this.editIndex === index) {
+              return [
+                h('button', {
+                  on: {
+                    click: () => {
+                      this.data[index].name = this.editName
+                      this.data[index].age = this.editAge
+                      this.data[index].birthday = this.editBirthday
+                      this.data[index].address = this.editAddress
+                      this.editIndex = -1
+                    }
+                  }
+                }, '保存'),
+                h('button', {
+                  style: {
+                    marginLeft: '6px'
+                  },
+                  on: {
+                    click: () => {
+                      this.editIndex = -1
+                    }
+                  }
+                }, '取消')
+              ]
+            } else { // 当前行是默认状态，渲染为一个按钮
+              return h('button', {
+                on: {
+                  click: () => {
+                    this.editName = row.name
+                    this.editAge = row.age
+                    this.editAddress = row.address
+                    this.editBirthday = row.birthday
+                    this.editIndex = index
+                  }
+                }
+              }, '修改')
+            }
+          }
         }
       ],
       data: [
@@ -67,7 +171,12 @@ export default {
           birthday: '687024000000',
           address: '深圳市南山区深南大道'
         }
-      ]
+      ],
+      editName: '', // 第一列输入框
+      editAge: '', // 第二列输入框
+      editBirthday: '', // 第三列输入框
+      editAddress: '', // 第四列输入框
+      editIndex: -1 // 当前聚焦的输入框的行数
     }
   }
 }
